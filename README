@@ -1,0 +1,13 @@
+INSTRUCTIONS FOR USE:
+
+1. Run "source bravo-infra-openrc.sh" and input your openstack creds
+2. Run ./makeInfra
+3. Manually connect routers 2 3 and 4 to graynet in openstack with ips 192.168.1.4, .5, and .6 respectively
+3. After the script exits, give the infra 10 minutes to turn on
+4. Run "ansible-playbook ping.yml" to test status
+5. Run "ansible-playbook networkingFix.yml" to fix networking for gray boxes
+6. Run "ansible-playbook networkingFix2.yml" to fix networking for comp boxes
+
+NOTE: Use the teardown.sh script to delete most of the infra, if needed (You will still likely need to clean the routers and networks up manually)
+NOTE2: I have been unable to get the windows xp box to talk with ansible. If you want to fix it, please do.
+NOTE3: The linux boxes can only be reached from gray net by their lower IP address. I think its a weird networking issue; all the comp boxes work fine. Just use the lower ips, or better yet, use their names from the provided inventory.ini file.

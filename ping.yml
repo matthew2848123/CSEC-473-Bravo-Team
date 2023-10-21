@@ -1,0 +1,16 @@
+---
+- name: Linux Ping
+  hosts: linux_hosts
+  tasks:
+  - name: Ping
+    ping:
+- name: Windows Ping
+  hosts: win_hosts
+  tasks:
+  - name: Ping
+    win_ping:
+- name: Gray Ping
+  hosts: gray
+  tasks:
+  - name: Ping
+    ping:

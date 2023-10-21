@@ -1,0 +1,7 @@
+---
+- name: Add routes
+  hosts: gray
+  tasks:
+    - name: Fix gray networking routes
+      ansible.builtin.script: ./fixLocalNetworking.sh
+      become: true

@@ -1,0 +1,10 @@
+---
+- name: Add addresses
+  hosts: linux_hosts
+  tasks:
+    - name: Enable links
+      ansible.builtin.shell: ip link set up ens7
+      become: true
+    - name: Fix ip addresses
+      ansible.builtin.shell: ip address add {{ second_ip|quote }} dev ens7
+      become: true
