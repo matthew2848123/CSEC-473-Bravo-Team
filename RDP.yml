@@ -1,0 +1,29 @@
+- name: Install and configure RDP
+  hosts: windows
+  gather_facts: no
+  tasks:
+  - name: Enable Remote Desktop
+    ansible.windows.win_shell: |
+      Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0
+      Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+  - name: Add users to Remote Desktop Users group
+    ansible.windows.win_shell: |
+      Add-LocalGroupMember -Group "Remote Desktop Users" -Member "{{ item }}"
+    loop: "{{ rdp_users }}"
+    vars:
+      rdp_users:
+        - User1
+        - User2
+        # Add other usernames as needed
+  - name: Ensure firewall rule for RDP is present
+    ansible.windows.win_firewall_rule:
+      name: RDP
+      localport: 3389
+      action: allow
+      direction: in
+      enable: yes
+      protocol: tcp
+      profiles:
+        - Domain
+        - Private
+        - Public

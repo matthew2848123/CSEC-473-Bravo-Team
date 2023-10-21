@@ -1,0 +1,34 @@
+---
+- name: Configure DNS on Windows Server
+  hosts: windows
+  gather_facts: no
+  vars:
+    dns_feature_name: "DNS"
+    forward_lookup_zone: "yourdomain.com"
+    reverse_lookup_zone: "0.168.192.in-addr.arpa" # Change this to match your network.
+
+  tasks:
+  - name: Install DNS Server feature
+    ansible.windows.win_feature:
+      name: "{{ dns_feature_name }}"
+      state: present
+      include_management_tools: true
+
+  - name: Create Forward Lookup Zone
+    ansible.windows.win_dns_zone:
+      name: "{{ forward_lookup_zone }}"
+      type: primary
+      dynamic_update: secure
+
+  - name: Create Reverse Lookup Zone
+    ansible.windows.win_dns_zone:
+      name: "{{ reverse_lookup_zone }}"
+      type: primary
+      dynamic_update: secure
+
+  # Add any additional DNS record setup or configuration here.
+
+  - name: Restart DNS Service
+    ansible.windows.win_service:
+      name: DNS
+      state: restarted

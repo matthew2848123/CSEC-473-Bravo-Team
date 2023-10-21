@@ -1,0 +1,57 @@
+#Matthew Repecki mrr5298@rit.edu 9/22/2023
+---
+- name: Install and configure Active Directory
+  hosts: windows
+  gather_facts: no
+  tasks:
+  - name: Install AD Domain Services
+    win_feature:
+      name: AD-Domain-Services
+      state: present
+
+  - name: Install required features for AD
+    win_feature:
+      name:
+        - DNS
+        - RSAT-AD-Tools
+      state: present
+
+  - name: Install and configure AD forest
+    win_domain:
+      dns_domain_name: yourdomain.local
+      safe_mode_password: SecurePassword123!
+      state: domain
+      domain_mode: Win2012
+      forest_mode: Win2012
+    register: domain_result
+
+  - name: Reboot if needed
+    win_reboot:
+    when: domain_result.reboot_required
+
+  - name: Add groups to AD
+    win_domain_group:
+      name: "{{ item }}"
+      scope: global
+      category: security
+    loop:
+      - Group1
+      - Group2
+      # Add other groups as needed
+      
+  - name: Add users to AD
+    win_domain_user:
+      name: "{{ item.name }}"
+      password: "{{ item.password }}"
+      state: present
+      groups: "{{ item.groups }}"
+      attributes:
+        givenName: "{{ item.first_name }}"
+        sn: "{{ item.last_name }}"
+        displayName: "{{ item.first_name }} {{ item.last_name }}"
+        # Add other attributes as needed
+    loop:
+      - { name: 'User1', password: 'User1Password', groups: ['Group1'], first_name: 'FirstNameUser1', last_name: 'LastNameUser1' }
+      - { name: 'User2', password: 'User2Password', groups: ['Group2'], first_name: 'FirstNameUser2', last_name: 'LastNameUser2' }
+      # Add other users as needed
+    no_log: True  # Do not log user creation, as it contains sensitive information.

@@ -1,0 +1,45 @@
+---
+- name: Configure SMB Share on Windows Server
+  hosts: windows
+  gather_facts: no
+  vars:
+    share_name: "MyShare"
+    share_path: "C:\\Shared"
+    share_description: "My Shared Folder"
+
+  tasks:
+  - name: Ensure File-Services feature is installed
+    ansible.windows.win_feature:
+      name: "File-Services"
+      state: present
+      include_management_tools: true
+
+  - name: Create directory to share
+    ansible.windows.win_file:
+      path: "{{ share_path }}"
+      state: directory
+
+  - name: Create SMB Share
+    ansible.windows.win_share:
+      name: "{{ share_name }}"
+      path: "{{ share_path }}"
+      description: "{{ share_description }}"
+      list: yes
+      full: Everyone
+      # Adjust permissions as necessary
+
+  - name: Ensure firewall rule for SMB is present
+    ansible.windows.win_firewall_rule:
+      name: SMB
+      localport: 445
+      action: allow
+      direction: in
+      enable: yes
+      protocol: tcp
+      profiles:
+        - Domain
+        - Private
+        - Public
+
+  # You might also need to adjust other firewall rules depending on your setup.
+  # SMB typically uses ports 137, 138 (UDP) and 139, 445 (TCP).
