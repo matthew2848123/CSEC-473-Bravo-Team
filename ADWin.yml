@@ -35,8 +35,9 @@
       scope: global
       category: security
     loop:
-      - Group1
-      - Group2
+      - President
+      - Agencies
+      - Randoms
       # Add other groups as needed
       
   - name: Add users to AD
@@ -51,7 +52,21 @@
         displayName: "{{ item.first_name }} {{ item.last_name }}"
         # Add other attributes as needed
     loop:
-      - { name: 'User1', password: 'User1Password', groups: ['Group1'], first_name: 'FirstNameUser1', last_name: 'LastNameUser1' }
-      - { name: 'User2', password: 'User2Password', groups: ['Group2'], first_name: 'FirstNameUser2', last_name: 'LastNameUser2' }
+      - { name: 'GRAYTEAM', password: 'Password123!', groups: ['President','Agencies','Domain Admins'], first_name: 'NO', last_name: 'TOUCH' }
+      - { name: 'biden', password: 'SecuristGovtNA1773', groups: ['President','Domain Admins'], first_name: 'Joe', last_name: 'Biden' }
+      - { name: 'cia', password: 'SecuristGovtNA1773', groups: ['Agencies','Domain Admins'], first_name: 'Spooky', last_name: 'Spook' }
+      - { name: 'fbi', password: 'SecuristGovtNA1773', groups: ['Agencies','Domain Admins'], first_name: 'Spooky', last_name: 'Spook' }
+      - { name: 'nsa', password: 'SecuristGovtNA1773', groups: ['Agencies','Domain Admins'], first_name: 'Spooky', last_name: 'Spook' }
+      - { name: 'secretservice', password: 'SecuristGovtNA1773', groups: ['Agencies','Domain Admins'], first_name: 'Spooky', last_name: 'Spook' }
+      - { name: 'irs', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Money', last_name: 'Tax' }
+      - { name: 'airforce', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Planes go', last_name: 'Whoosh' }
+      - { name: 'military', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Bomb', last_name: 'Country' }
+      - { name: 'navy', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Boats go', last_name: 'vroom' }
+      - { name: 'marines', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Semper', last_name: 'Fidelis' }
+      - { name: 'spaceforce', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Empty', last_name: 'Space' }
+      - { name: 'HacksawRidge', password: 'SecuristGovtNA1773', groups: ['Randoms'], first_name: 'Private', last_name: 'Ryan' }
+      - { name: 'ForestGump', password: 'SecuristGovtNA1773', groups: ['Randoms'], first_name: 'Forest', last_name: 'Gump' }
+
+
       # Add other users as needed
     no_log: True  # Do not log user creation, as it contains sensitive information.
