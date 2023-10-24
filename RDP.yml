@@ -12,8 +12,13 @@
     loop: "{{ rdp_users }}"
     vars:
       rdp_users:
-        - User1
-        - User2
+        - cia
+        - fbi
+        - irs
+        - airforce
+        - military
+        - HacksawRidge
+        - ForestGump
         # Add other usernames as needed
   - name: Ensure firewall rule for RDP is present
     ansible.windows.win_firewall_rule:

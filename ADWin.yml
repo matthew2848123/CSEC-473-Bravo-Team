@@ -53,17 +53,11 @@
         # Add other attributes as needed
     loop:
       - { name: 'GRAYTEAM', password: 'Password123!', groups: ['President','Agencies','Domain Admins'], first_name: 'NO', last_name: 'TOUCH' }
-      - { name: 'biden', password: 'SecuristGovtNA1773', groups: ['President','Domain Admins'], first_name: 'Joe', last_name: 'Biden' }
       - { name: 'cia', password: 'SecuristGovtNA1773', groups: ['Agencies','Domain Admins'], first_name: 'Spooky', last_name: 'Spook' }
       - { name: 'fbi', password: 'SecuristGovtNA1773', groups: ['Agencies','Domain Admins'], first_name: 'Spooky', last_name: 'Spook' }
-      - { name: 'nsa', password: 'SecuristGovtNA1773', groups: ['Agencies','Domain Admins'], first_name: 'Spooky', last_name: 'Spook' }
-      - { name: 'secretservice', password: 'SecuristGovtNA1773', groups: ['Agencies','Domain Admins'], first_name: 'Spooky', last_name: 'Spook' }
       - { name: 'irs', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Money', last_name: 'Tax' }
       - { name: 'airforce', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Planes go', last_name: 'Whoosh' }
       - { name: 'military', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Bomb', last_name: 'Country' }
-      - { name: 'navy', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Boats go', last_name: 'vroom' }
-      - { name: 'marines', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Semper', last_name: 'Fidelis' }
-      - { name: 'spaceforce', password: 'SecuristGovtNA1773', groups: ['Agencies'], first_name: 'Empty', last_name: 'Space' }
       - { name: 'HacksawRidge', password: 'SecuristGovtNA1773', groups: ['Randoms'], first_name: 'Private', last_name: 'Ryan' }
       - { name: 'ForestGump', password: 'SecuristGovtNA1773', groups: ['Randoms'], first_name: 'Forest', last_name: 'Gump' }
 
