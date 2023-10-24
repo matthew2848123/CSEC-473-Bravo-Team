@@ -1,0 +1,118 @@
+---
+- name: Configure FTP Ubuntu Server
+  hosts: ubuntusFTP
+  become: yes
+  gather_facts: yes
+  tasks:
+    # Pings device on network to ensure it is active and online
+    - name: Ping the device
+      ping:
+
+    # Change hostname
+    - name: Change hostname
+      hostname:
+        name: nationalarchives
+
+    # Update the system with apt command
+    - name: Update the system
+      apt:
+        update_cache: yes
+
+    # Install the tool lftp to help with ftp transfers
+    - name: Install lftp
+      apt:
+        name: lftp
+        state: present
+
+    # Install FTP service
+    - name: Install vsftpd
+      apt:
+        name: vsftpd
+        state: present
+
+    # Change FTP config to allow for FTP uploads and operations
+    - name: Allow FTP uploads
+      lineinfile:
+        path: /etc/vsftpd.conf
+        regexp: '#write_enable=YES'
+        line: 'write_enable=YES'
+
+     # Allow anonymous uploads
+    - name: Modify vsftpd configuration
+      lineinfile:
+        path: /etc/vsftpd.conf
+        regexp: 'anonymous_enable='
+        line: 'anonymous_enable=YES'
+
+    #Allow anonymous uploads
+    - name: Allow annonymous uploads
+      lineinfile:
+        path: /etc/vsftpd.conf
+        regexp: '#anon_upload_enable=YES'
+        line: 'anon_upload_enable=YES'
+
+    #Allow anonymous stuff
+    - name: Allow anonymous stuff
+      command: chmod a-w /srv/ftp
+      command: chown ftp:ftp /srv/ftp
+      
+    # Change allow all permission
+    - name: Allow all permissions
+      file:
+        path: /srv/ftp
+        mode: "0777"
+
+    # Restart FTP service after making changes to config and enable for reboot
+    - name: restart vsftpd
+      command: systemctl restart vsftpd
+      command: systemctl enable vsftpd
+
+    # Create user called nsa
+    - name: Create defined user
+      user:
+        name: nsa
+        password: "{{ 'SecuristGovtNA1773' | password_hash('sha512') }}"
+        groups: sudo
+        shell: /bin/bash
+        home: /home/nsa
+        createhome: yes
+
+    # Create user called secretservice
+    - name: Create defined user
+      user:
+        name: secretservice
+        password: "{{ 'SecuristGovtNA1773' | password_hash('sha512') }}"
+        groups: sudo
+        shell: /bin/bash
+        home: /home/secretservice
+        createhome: yes
+
+    # Create user called navy
+    - name: Create defined user
+      user:
+        name: navy
+        password: "{{ 'SecuristGovtNA1773' | password_hash('sha512') }}"
+        groups: ftp
+        shell: /bin/bash
+        home: /home/navy
+        createhome: yes
+
+    # Create user called marines
+    - name: Create defined user
+      user:
+        name: marines
+        password: "{{ 'SecuristGovtNA1773' | password_hash('sha512') }}"
+        groups: ftp
+        shell: /bin/bash
+        home: /home/marines
+        createhome: yes
+
+    # Create user called spaceforce
+    - name: Create defined user
+      user:
+        name: spaceforce
+        password: "{{ 'SecuristGovtNA1773' | password_hash('sha512') }}"
+        groups: ftp
+        shell: /bin/bash
+        home: /home/spaceforce
+        createhome: yes

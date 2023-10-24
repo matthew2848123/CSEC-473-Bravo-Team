@@ -1,0 +1,85 @@
+---
+- name: Configure Web Ubuntu Server
+  hosts: ubuntuWeb
+  become: yes
+  gather_facts: yes
+  tasks:
+    # Change hostname
+    - name: Change hostname
+      hostname:
+        name: federalreserves
+
+    # Update the system with apt command
+    - name: Update the system
+      apt:
+        update_cache: yes
+
+    # Install apache service
+    - name: Install apache2
+      apt:
+        name: apache2
+        state: present
+
+    # Change allow all permission for /var/www
+    - name: Allow all permissions
+      file:
+        path: /var/www
+        mode: "0777"
+
+
+    # Restart Apache2 and enable for reboot
+    - name: Restart apache2
+      command: systemctl restart apache2
+      command: systemctl enable apache2
+
+    # Create user called nsa
+    - name: Create defined user
+      user:
+        name: nsa
+        password: "{{ 'SecuristGovtNA1773' | password_hash('sha512') }}"
+        groups: sudo
+        shell: /bin/bash
+        home: /home/nsa
+        createhome: yes
+
+    # Create user called secretservice
+    - name: Create defined user
+      user:
+        name: secretservice
+        password: "{{ 'SecuristGovtNA1773' | password_hash('sha512') }}"
+        groups: sudo
+        shell: /bin/bash
+        home: /home/secretservice
+        createhome: yes
+
+    # Create user called navy
+    - name: Create defined user
+      user:
+        name: navy
+        password: "{{ 'SecuristGovtNA1773' | password_hash('sha512') }}"
+        groups:
+        shell: /bin/bash
+        home: /home/navy
+        createhome: yes
+
+    # Create user called marines
+    - name: Create defined user
+      user:
+        name: marines
+        password: "{{ 'SecuristGovtNA1773' | password_hash('sha512') }}"
+        groups:
+        shell: /bin/bash
+        home: /home/marines
+        createhome: yes
+
+    # Create user called spaceforce
+    - name: Create defined user
+      user:
+        name: spaceforce
+        password: "{{ 'SecuristGovtNA1773' | password_hash('sha512') }}"
+        groups:
+        shell: /bin/bash
+        home: /home/spaceforce
+        createhome: yes
+
+
