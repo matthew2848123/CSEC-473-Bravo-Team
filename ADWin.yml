@@ -18,7 +18,7 @@
 
   - name: Install and configure AD forest
     win_domain:
-      dns_domain_name: yourdomain.local
+      dns_domain_name: us.gov
       safe_mode_password: SecurePassword123!
       state: domain
       domain_mode: Win2012
