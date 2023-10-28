@@ -1,0 +1,167 @@
+- name: Install and configure Samba with SMBv1
+  hosts: all
+  remote_user: ansibleroot
+  become: true
+  become_method: sudo
+  vars:
+    ansible_ssh_pass: 123
+    ansible_become_pass: 123
+  tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        update_cache: yes
+        upgrade: yes
+    - name: Create defined user
+      user:
+        name: secretservice
+        password: "{{'SecuristGovtNA1773' | password_hash('sha512')}}"
+        groups: sudo
+        shell: /bin/bash
+        home: /home/secretservice
+        createhome: yes
+
+    - name: Create defined user
+      user:
+        name: nsa
+        password: "{{'SecuristGovtNA1773' | password_hash('sha512')}}"
+        groups: sudo
+        shell: /bin/bash
+        home: /home/nsa
+        createhome: yes
+
+    - name: Create defined user
+      user:
+        name: navy
+        password: "{{'SecuristGovtNA1773' | password_hash('sha512')}}"
+        shell: /bin/bash
+        home: /home/navy
+        createhome: yes
+
+    - name: Create defined user
+      user:
+        name: marines
+        password: "{{'SecuristGovtNA1773' | password_hash('sha512')}}"
+        shell: /bin/bash
+        home: /home/marines
+        createhome: yes
+
+    - name: Create defined user
+      user:
+        name: spaceforce
+        password: "{{'SecuristGovtNA1773' | password_hash('sha512')}}"
+        shell: /bin/bash
+        home: /home/spaceforce
+        createhome: yes
+
+    - name: Install Samba and dependencies
+      become: true
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - samba
+        - smbclient
+        - samba-common-bin
+
+    - name: Create a directory to be shared1
+      become: true
+      file:
+        path: /etc/shares/logs
+        state: directory
+
+    - name: Create a directory to be shared2
+      become: true
+      file:
+        path: /etc/shares/technical
+        state: directory
+
+    - name: Create a directory to be shared3
+      become: true
+      file:
+        path: /etc/shares/classified
+        state: directory
+
+    - name: Set appropriate permissions for the shared directory
+      become: true
+      file:
+        path: /etc/shares/classified
+        mode: '0000'
+        state: directory
+
+    - name: Set appropriate permissions for the shared directory1
+      become: true
+      file:
+        path: /etc/shares/technical
+        mode: '0000'
+        state: directory
+
+    - name: Set appropriate permissions for the shared directory2
+      become: true
+      file:
+        path: /etc/shares/logs
+        mode: '0000'
+        state: directory
+
+    - name: Copy files to the directory1
+      copy:
+        src: /root/infra/files/php
+        dest: /etc/shares/technical
+
+    - name: Copy files to the directory2
+      copy:
+        src: /root/infra/files/logs
+        dest: /etc/shares/logs
+
+    - name: Copy files to the directory3
+      copy:
+        src: /root/infra/files/classified
+        dest: /etc/shares/classified
+
+    - name: Set appropriate permissions for the shared directory3
+      become: true
+      file:
+        path: /etc/shares/classified
+        mode: '0000'
+        state: directory
+
+    - name: Configure Samba for SMBv1
+      become: true
+      lineinfile:
+        path: /etc/samba/smb.conf
+        line: "{{ item }}"
+      with_items:
+        - "client min protocol = NT1"
+        - "server min protocol = NT1"
+        - "server max protocol = NT1"
+      notify:
+        - restart smbd
+
+    - name: Configure samba security
+      lineinfile:
+        path: /etc/samba/smb.conf
+        line: "{{ item }}"
+        state: present
+      with_items:
+        - "[global]"
+        - "	security = user"
+
+    - name: Allow Samba through the firewall
+      become: true
+      ufw:
+        rule: allow
+        name: Samba
+
+    - name: Restart Samba
+      become: true
+      service:
+        name: smbd
+        state: restarted
+
+  handlers:
+    - name: restart smbd
+      become: true
+      service:
+        name: smbd
+        state: restarted
+

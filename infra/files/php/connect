@@ -1,0 +1,15 @@
+<?php
+function OpenCon()
+{
+$dbhost = "localhost";
+$dbuser = "captain_ghost";
+$dbpass = "$#Bl00d16";
+$db = "Classified"
+$conn = new mysqli($dbhost, $dbuser, $dbpass, $dbname) or die("Connect failed");
+return $conn
+}
+function CloseCon($conn)
+{
+$conn -> close();
+}
+?>
