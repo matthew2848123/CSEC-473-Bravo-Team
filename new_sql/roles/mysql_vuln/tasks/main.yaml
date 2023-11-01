@@ -61,7 +61,7 @@
 - name: Give captain_ghost Tons Of Perms
   become: yes
   ansible.builtin.shell: |-
-    docker exec -it db mysql -u root --password={{ MYSQL_ROOT_PW | trim }} --database=classified -e '
+    docker exec -it db mysql -h 127.0.0.1 --port=3306 -u root --password={{ MYSQL_ROOT_PW | trim }} --database=classified -e '
             GRANT ALL PRIVILEGES ON classified.* TO "{{ MYSQL_USER | trim }}"@"localhost";'
 
 - name: Create keys Table
