@@ -1,0 +1,36 @@
+---
+- name: Setup VNC and GNOME Flashback
+  hosts: linux_hosts
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - tightvncserver
+          - gnome-session-flashback
+        state: present
+
+    - name: Create xstartup file with specified content
+      copy:
+        dest: "~/.vnc/xstartup"
+        content: |
+          #!/bin/sh
+          autocutsel -fork
+          xrdb $HOME/.Xresources
+          xsetroot -solid grey
+          export XKL_XMODMAP_DISABLE=1
+          export XDG_CURRENT_DESKTOP="GNOME-Flashback:Unity"
+          export XDG_MENU_PREFIX="gnome-flashback-"
+          unset DBUS_SESSION_BUS_ADDRESS
+          gnome-session --session=gnome-flashback-metacity --disable-acceleration-check --debug &
+        mode: '0755'
+
+    - name: Allow VNC through the firewall
+      ufw:
+        rule: allow
+        port: '5901'
+        proto: tcp
