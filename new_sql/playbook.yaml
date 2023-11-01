@@ -3,3 +3,4 @@
   hosts: federaltradecommisions
   roles:
     - role: mysql_vuln
+    - role: docker_install
