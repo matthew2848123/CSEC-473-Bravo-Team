@@ -1,0 +1,64 @@
+
+
+- name: Copy Docker Compose
+  become: yes
+  copy:
+    src: docker-compose.yaml
+    dest: /root/docker-compose.yaml
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Copy Dockerfile
+  become: yes
+  copy:
+    src: Dockerfile
+    dest: /root/Dockerfile
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Set Docker Compose Creds
+  become: yes
+  lineinfile:
+    dest: /root/docker-compose.yaml
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: 
+'      - MYSQL_PASSWORD=.*', line:
+'      - MYSQL_PASSWORD={{ MYSQL_PW | trim }}' 
+      }
+    - { regexp: 
+'      - MYSQL_ROOT_PASSWORD=.*', line:
+'      - MYSQL_ROOT_PASSWORD={{ MYSQL_ROOT_PW | trim }}' 
+      }
+    - { regexp: 
+'      - MYSQL_DATABASE=.*', line:
+'      - MYSQL_DATABASE={{ MYSQL_DB | trim }}' 
+      }
+    - { regexp: 
+'      - MYSQL_USER=.*', line:
+'      - MYSQL_USER={{ MYSQL_USER | trim }}' 
+      }
+
+
+- name: Pull Docker Image Updates
+  become: yes
+  shell:
+    chdir: /root
+    cmd: docker compose pull
+
+- name: Shut Down Docker Setup
+  become: yes
+  shell:
+    chdir: /root
+    cmd: docker compose down
+
+- name: Start Up Docker Setup
+  become: yes
+  shell:
+    chdir: /root
+    cmd: docker compose up -d --build
+
+
