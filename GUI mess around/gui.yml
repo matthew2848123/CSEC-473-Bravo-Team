@@ -16,7 +16,7 @@
 
     - name: Create xstartup file with specified content
       copy:
-        dest: "~/.vnc/xstartup"
+        dest: "home/grayteam/.vnc/xstartup"
         content: |
           #!/bin/sh
           autocutsel -fork
