@@ -12,7 +12,7 @@ services:
       - "./db:/var/lib/mysql"
     environment:
       - MYSQL_ROOT_PASSWORD=[redacted]
-      - MYSQL_PASSWORDdb=[redacted]
+      - MYSQL_PASSWORD=[redacted]
       - MYSQL_DATABASE=[redacted]
       - MYSQL_USER=[redacted]
       - TZ="America/New_York"
