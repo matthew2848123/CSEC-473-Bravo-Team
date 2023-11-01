@@ -1,0 +1,55 @@
+---
+all:
+  children:
+    linux:
+      vars:
+        ansible_user: ansible
+        ansible_password: ansible
+        ansible_become_password: ansible
+      children:
+        federalreserves:
+          hosts:
+            192.168.1.12:
+        federaltradecommisions:
+          hosts:
+            192.168.1.13:
+        area51:
+          hosts:
+            192.168.2.15:
+        nationalarchives:
+          hosts:
+            192.168.2.14:
+        pentagon:
+          hosts:
+            192.168.3.16:
+    windows:
+      vars:
+        ansible_connection: psrp
+        ansible_psrp_cert_validation: ignore
+        ansible_psrp_protocol: https
+        ansible_psrp_auth: ntlm
+        ansible_psrp_credssp_auth_mechanism: ntlm
+        ansible_become_method: runas
+        ansible_user: "ansible"
+        ansible_password: "ansible"
+        ansible_become_password: "ansible"
+      children:
+        supremecourt:
+          hosts:
+            192.168.1.11:
+          vars:
+        houseofrepresentatives:
+          hosts:
+            192.168.1.10:
+        internalrevenueservice:
+          hosts:
+            192.168.3.18:
+        enviromentalprotectionagency:
+          hosts:
+            192.168.3.18:
+
+        whitehouse:
+          hosts:
+            192.168.4.32:
+
+
