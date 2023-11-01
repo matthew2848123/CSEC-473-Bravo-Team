@@ -9,15 +9,6 @@
     group: root
     mode: '0600'
 
-- name: Copy Dockerfile
-  become: yes
-  copy:
-    src: Dockerfile
-    dest: /root/Dockerfile
-    owner: root
-    group: root
-    mode: '0644'
-
 - name: Set Docker Compose Creds
   become: yes
   lineinfile:
