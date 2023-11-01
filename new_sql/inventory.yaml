@@ -3,9 +3,9 @@ all:
   children:
     linux:
       vars:
-        ansible_user: ansible
-        ansible_password: ansible
-        ansible_become_password: ansible
+        ansible_user: "grayteam"
+        ansible_password: "GrayTeamBrav0!"
+        ansible_become_password: "GrayTeamBrav0!"
       children:
         federalreserves:
           hosts:
