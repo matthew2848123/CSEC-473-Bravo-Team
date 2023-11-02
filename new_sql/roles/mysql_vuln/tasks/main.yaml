@@ -63,6 +63,7 @@
     - { regexp: 
 'define("DB_DB",".*");', line:
 'define("DB_DB","classified");' 
+      }
 
 - name: Clear DB (if it exists)
   become: yes
@@ -88,6 +89,9 @@
     chdir: /root
     cmd: docker compose up -d --build
 
+- name: Wait for Docker Containers to Spin Up...
+  pause:
+    seconds: 5
 
 - name: Create keys Table
   become: yes
@@ -95,7 +99,8 @@
     docker exec -it db mysql -u root --password={{ MYSQL_ROOT_PW | trim }} --database=classified -e '
             CREATE TABLE IF NOT EXISTS sshkeys (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            sshkey TEXT NOT NULL);'
+            sshkey TEXT NOT NULL,
+            UNIQUE (sshkey) );'
 
 - name: Insert Data into classified Table
   become: yes
@@ -103,6 +108,7 @@
     docker exec -it db mysql -u root --password={{ MYSQL_ROOT_PW | trim }} --database=classified -e '
             INSERT INTO sshkeys (sshkey) VALUES ( "{{ item }}" );'
   with_items: "{{ key_values }}"
+  ignore_errors: true
 
 #- name: Create users Table
 #  become: yes

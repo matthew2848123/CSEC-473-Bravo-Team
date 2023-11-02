@@ -28,7 +28,6 @@ services:
     entrypoint: 
     volumes:
       - "./site:/var/www/html"
-      #- "./site/apache2.conf:/etc/apache2/apache2.conf"
     ports:
       - 80:80
     networks:
