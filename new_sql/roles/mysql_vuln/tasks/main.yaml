@@ -13,7 +13,7 @@
   become: yes
   copy:
     src: site
-    dest: /root/site
+    dest: /root/
     owner: root
     group: root
 
