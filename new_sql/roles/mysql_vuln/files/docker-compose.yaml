@@ -12,6 +12,8 @@ services:
       - "./db:/var/lib/mysql"
     ports:
       - 3306:3306
+    networks:
+      - db_net
     environment:
       - MYSQL_ROOT_PASSWORD=[redacted]
       - MYSQL_PASSWORD=[redacted]
@@ -19,3 +21,19 @@ services:
       - MYSQL_USER=[redacted]
       - TZ="America/New_York"
 
+  site: 
+    image: php:8.0-apache
+    container_name: php
+    restart: always
+    entrypoint: 
+    volumes:
+      - "./site:/var/www/html"
+      #- "./site/apache2.conf:/etc/apache2/apache2.conf"
+    ports:
+      - 80:80
+    networks:
+      - db_net
+  
+
+networks:
+  db_net:
