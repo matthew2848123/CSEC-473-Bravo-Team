@@ -38,5 +38,5 @@ networks:
   db_net:
     ipam:
       config:
-        - subnet: 172.16.12.34/30
+        - subnet: 172.16.12.34/29
 
