@@ -1,4 +1,7 @@
 # AnsibleWin
+
+See directions.txt for instructions to create the boxes in the first place, below is windows service instructions
+
 On Windows Server 2019
 Make sure WinRM is running so do 
 Get-Service WinRM and check the status
