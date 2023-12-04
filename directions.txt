@@ -8,7 +8,8 @@ INSTRUCTIONS FOR USE:
 6. Run "ansible-playbook ping.yml" to test status
 7. Run "ansible-playbook networkingFix.yml" to fix networking for gray boxes
 8. Run "ansible-playbook networkingFix2.yml" to fix networking for comp boxes
+9. Run relavent ansible scripts for individual services
 
-NOTE: Use the teardown.sh script to delete most of the infra, if needed (You will still likely need to clean the routers and networks up manually)
-NOTE2: I have been unable to get the windows xp box to talk with ansible. If you want to fix it, please do.
-NOTE3: The linux boxes can only be reached from gray net by their lower IP address. I think its a weird networking issue; all the comp boxes work fine. Just use the lower ips, or better yet, use their names from the provided inventory.ini file.
+NOTE: The teardown script doesn't really work
+NOTE2: The linux boxes can only be reached from gray net by their lower IP address. I think its a weird networking issue cause of the dual-homed routing; all the comp boxes work fine. Just use the lower ips, or better yet, use their names from the provided inventory.ini file.
+Note3: If it doesn't work, sorry. There were a lot of last minute patches that might not have been recorded.
